@@ -1,10 +1,13 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from contextlib import asynccontextmanager
 from deep_translator import GoogleTranslator
+from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.responses import HTMLResponse
 import whisper
 import tempfile
 import os
-app = FastAPI()
+app = FastAPI(docs_url=None,
+    redoc_url=None)
 
 # Global model variable
 model = None
@@ -25,6 +28,15 @@ async def lifespan(app: FastAPI):
     # Shutdown (optional cleanup)
     print("Shutting down...")
 app = FastAPI(lifespan=lifespan)
+
+@app.get("/docs", include_in_schema=False)
+async def custom_swagger_ui_html():
+
+    return get_swagger_ui_html(
+        openapi_url=app.openapi_url,
+        title="Whisper Translation API",
+        swagger_css_url="https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.1/themes/3.x/theme-monokai.css",
+    )
 
 
 @app.post("/transcribe")
