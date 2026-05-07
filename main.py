@@ -4,7 +4,6 @@ from deep_translator import GoogleTranslator
 import whisper
 import tempfile
 import os
-app = FastAPI()
 
 # Global model variable
 model = None
