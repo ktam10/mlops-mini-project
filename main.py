@@ -6,8 +6,6 @@ from fastapi.responses import HTMLResponse
 import whisper
 import tempfile
 import os
-app = FastAPI(docs_url=None,
-    redoc_url=None)
 
 # Global model variable
 model = None
@@ -27,7 +25,7 @@ async def lifespan(app: FastAPI):
 
     # Shutdown (optional cleanup)
     print("Shutting down...")
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, title="Whisper Translation API")
 
 @app.get("/docs", include_in_schema=False)
 async def custom_swagger_ui_html():
