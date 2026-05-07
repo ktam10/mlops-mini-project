@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: whisper-api
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: whisper-api
+    template:
+        metadata:
+            labels:
+                app: whisper-api
+        spec:
+            containers:
+                - name: whsiper-api
+                  image: 316412036948.dkr.ecr.us-east-2.amazonaws.com/whisper-api:latest
+                  ports:
+                    - containerPort: 8000
