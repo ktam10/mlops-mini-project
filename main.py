@@ -25,7 +25,7 @@ async def lifespan(app: FastAPI):
 
     # Shutdown (optional cleanup)
     print("Shutting down...")
-app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, title="Whisper Translation API")
+app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, title="Whisper Translation API", swagger_ui_parameters={"defaultModelsExpandDepth": -1,"docExpansion": "none"})
 
 @app.get("/docs", include_in_schema=False)
 async def custom_swagger_ui_html():
@@ -33,7 +33,7 @@ async def custom_swagger_ui_html():
     return get_swagger_ui_html(
         openapi_url=app.openapi_url,
         title="Whisper Translation API",
-        swagger_css_url="https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.1/themes/3.x/theme-monokai.css",
+        swagger_css_url="https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.1/themes/3.x/theme-dark.css",
     )
 
 
