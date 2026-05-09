@@ -13,7 +13,8 @@ spec:
                 app: whisper-api
         spec:
             containers:
-                - name: whsiper-api
+                - name: whisper-api
                   image: 316412036948.dkr.ecr.us-east-2.amazonaws.com/whisper-api:latest
+                  imagePullPolicy: Always
                   ports:
                     - containerPort: 8000
