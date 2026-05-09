@@ -5,6 +5,7 @@ import whisper
 import tempfile
 import os
 
+
 # Global model variable
 model = None
 
