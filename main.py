@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from contextlib import asynccontextmanager
 from deep_translator import GoogleTranslator
+from prometheus_fastapi_instrumentator import Instrumentator
 import whisper
 import tempfile
 import os
@@ -25,6 +26,7 @@ async def lifespan(app: FastAPI):
     # Shutdown (optional cleanup)
     print("Shutting down...")
 app = FastAPI(lifespan=lifespan)
+Instrumentator().instrument(app).expose(app)
 
 
 @app.post("/transcribe")
