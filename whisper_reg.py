@@ -19,7 +19,7 @@ MLFLOW_TRACKING_URI = os.environ.get(
 )
 
 EXPERIMENT_NAME = "whisper-test-prod"
-MODEL_SIZE = "base"
+MODEL_SIZE = "tiny"
 RUN_NAME = "whisper-base-registration2"
 REGISTERED_NAME = "whisper-transcription"
 
