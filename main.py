@@ -5,7 +5,7 @@ from prometheus_fastapi_instrumentator import Instrumentator
 import whisper
 import tempfile
 import os
-
+import mlflow
 
 # Global model variable
 model = None
@@ -14,12 +14,18 @@ model = None
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global model
-    app.state.model = whisper.load_model("base")
+    # Set MLflow tracking URI
+    mlflow.set_tracking_uri(os.environ.get("MLFLOW_TRACKING_URI", "http://18.223.143.16:5000"))
 
-    # Optional: store translator config
+    # Pull the Production model from MLflow instead of loading directly
+    model_uri = "models:/whisper-transcription/Production"
+    loaded_model = mlflow.pyfunc.load_model(model_uri)
+    app.state.model = loaded_model
+
+    # Translator stays the same
     app.state.translator = GoogleTranslator(source="en", target="es")
 
-    print("Whisper + Deep Translator loaded")
+    print("Whisper loaded from MLflow Production registry")
 
     yield # --- app runs here ---
 
@@ -42,8 +48,8 @@ async def transcribe_audio(file: UploadFile = File(...)):
             temp_path = temp.name
 
         # Use preloaded model
-        result = app.state.model.transcribe(temp_path)
-        english_text = result["text"]
+        result = app.state.model.predict({"audio_path": temp_path})
+        english_text = result
 
         # Step 2: Translate (deep_translator)
         spanish_text = app.state.translator.translate(english_text)

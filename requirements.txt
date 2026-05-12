@@ -4,3 +4,6 @@ openai-whisper
 deep-translator
 python-multipart
 prometheus-fastapi-instrumentator
+mlflow
+boto3
+python-multipart

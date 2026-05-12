@@ -1,5 +1,5 @@
 # Base image
-FROM python:3.10-slim
+FROM python:3.13-slim
 
 # Set working directory
 WORKDIR /app
@@ -18,6 +18,10 @@ COPY . .
 
 #Expose port 8000
 EXPOSE 8000
+
+# MLflow and AWS config
+ENV MLFLOW_TRACKING_URI=http://18.223.143.16:5000
+ENV AWS_DEFAULT_REGION=us-east-2
 
 #Start server
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
